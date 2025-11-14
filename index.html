@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=10.0" />
+  <title>Tru Bui: Multithreaded HTTP Server Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+  <div class="max-w-3xl mx-auto py-10 px-5">
+
+    <!-- Title -->
+    <h1 class="text-4- font-extrabold mb-4 text-gray-900">
+      Tru Bui: Custom C++ Web Server
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-lg text-gray-700 mb-8">
+      A complete HTTP server built from scratch in C/C++.
+    </p>
+
+    <!-- Video -->
+    <video class="w-full rounded-lg shadow-lg mb-8" controls autoplay muted loop>
+      <source src="assets/http_demo.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Section: Overview -->
+    <h2 class="text-2xl font-semibold mb-3">Overview</h2>
+    <p class="mb-4">
+      This project implements a fully functional HTTP server that can serve static files,
+      execute CGI programs, browse directories, enforce Basic HTTP authentication,
+      track statistics, and support three different concurrency modes (see below).
+      All request parsing, header generation, directory traversal, and process/thread logic
+      were implemented manually.
+    </p>
+
+    <!-- Section: Features -->
+    <h2 class="text-2xl font-semibold mb-3">Core Features Implemented</h2>
+    <ul class="list-disc ml-6 mb-8">
+      <li>Full HTTP request parsing (method, path, headers, CRLF handling)</li>
+      <li>GET and HEAD support for serving static files from <code>http-root-dir</code></li>
+      <li>Basic HTTP Authentication using Base64-encoded credentials</li>
+      <li>Directory browsing with automatic HTML generation</li>
+      <li>Sorting by name, size, modification time</li>
+      <li>Cgi-bin execution using fork + execv</li>
+      <li>POST method implementation</li>
+      <li>Stats page showing uptime, request count, min/max service time</li>
+    </ul>
+
+    <!-- Section: Concurrency -->
+    <h2 class="text-2xl font-semibold mb-3">Concurrency Modes</h2>
+
+    <p class="mb-4">
+      The server supports three different concurrency models selected via command-line flags:
+    </p>
+
+    <ul class="list-disc ml-6 mb-8">
+      <li>
+        <b>Iterative server (default)</b> — one request at a time
+      </li>
+      <li>
+        <b>-f — Fork-per-request:</b> each incoming request handled by its own child process.
+        Included proper <code>waitpid()</code> handling to avoid zombies.
+      </li>
+      <li>
+        <b>-t — Thread-per-request:</b> each connection handled by a dedicated pthread.
+      </li>
+      <li>
+        <b>-p — Thread pool:</b> A pool of 5 worker threads handles all incoming connections.
+        Accept loop protected by mutex to avoid simultaneous <code>accept()</code> calls.
+      </li>
+    </ul>
+
+    <!-- Section: Directory Browsing -->
+    <h2 class="text-2xl font-semibold mb-3">Directory Browsing</h2>
+    <p class="mb-4">
+      If the requested path is a directory, the server dynamically generates an HTML page containing:
+    </p>
+
+    <ul class="list-disc ml-6 mb-8">
+      <li>Hyperlinks to each file/subdirectory</li>
+      <li>File sizes</li>
+      <li>Modification timestamps</li>
+      <li>Sort controls (name / size / time)</li>
+    </ul>
+
+    <!-- Section: CGI-Bin -->
+    <h2 class="text-2xl font-semibold mb-3">CGI-Bin Support</h2>
+    <p class="mb-4">
+      Requests to <code>/cgi-bin/&lt;script&gt;</code> fork a child process that executes the script with:
+    </p>
+
+    <ul class="list-disc ml-6 mb-8">
+      <li>Environment variables: <code>REQUEST_METHOD</code>, <code>QUERY_STRING</code></li>
+      <li>Output piped back to the browser</li>
+      <li>Correct HTTP response header prepended</li>
+    </ul>
+
+    <p class="mb-8">
+      GET and POST are both supported — POST implemented as extra credit by parsing the message body.
+    </p>
+
+    <!-- Section: Statistics & Logs -->
+    <h2 class="text-2xl font-semibold mb-3">Statistics & Logging</h2>
+    <ul class="list-disc ml-6 mb-8">
+      <li><b>/stats</b> displays: uptime, request count, min/max service times, slowest and fastest URLs</li>
+      <li><b>/logs</b> displays: source host + URL for every request</li>
+      <li>Logs persist across server restarts</li>
+    </ul>
+
+    <!-- Section: Tech -->
+    <h2 class="text-2xl font-semibold mb-3">Technologies & Concepts</h2>
+    <ul class="list-disc ml-6 mb-8">
+      <li>POSIX sockets (<code>socket</code>, <code>bind</code>, <code>listen</code>, <code>accept</code>)</li>
+      <li>HTTP/1.1 protocol parsing</li>
+      <li>Process control (<code>fork()</code>, <code>execv()</code>, <code>waitpid()</code>)</li>
+      <li>Multithreading & synchronization (mutex around <code>accept()</code>)</li>
+      <li>Directory traversal (<code>opendir/readdir/stat</code>)</li>
+      <li>Time measurement (<code>clock()</code>)</li>
+      <li>Base64 authorization</li>
+    </ul>
+
+    <!-- GitHub link -->
+    <a href="https://www.linkedin.com/in/tj-bui/"
+       class="inline-block mt-6 text-blue-600 hover:underline text-lg">
+      Contact me to see source code!
+    </a>
+
+  </div>
+</body>
+</html>
