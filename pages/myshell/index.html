@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Unix Shell – CS252 Project</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+  <div class="max-w-3xl mx-auto py-10 px-5">
+
+    <!-- Title -->
+    <h1 class="text-4xl font-bold mb-3">Custom Unix Shell</h1>
+    <!-- Subtitle -->
+    <p class="text-lg text-gray-700 mb-8">
+      Tru Bui
+    </p>
+
+    <p class="text-lg text-gray-700 mb-6">
+        A custom Unix shell written in C/C++. Supports running programs,
+        redirection, pipes, background jobs, line editor, wildcard expansion, and path completion. Built using Flex and Bison.
+    </p>
+
+    <!-- Demo Video -->
+    <video
+      class="w-full rounded-lg shadow-lg mb-8"
+      controls
+      autoplay
+      muted
+      loop
+    >
+      <source src="assets/shell_demo.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Features -->
+    <h3 class="text-2xl font-semibold mb-4">Key Features</h3>
+
+    <ul class="list-disc pl-6 space-y-2 text-gray-800 mb-10">
+      <li>Lex/Yacc-based parser supporting complex command grammars</li>
+      <li>Execution engine using <code>fork()</code>, <code>execvp()</code>, and <code>waitpid()</code></li>
+      <li>Full support for I/O redirection: <code>&gt;</code>, <code>&gt;&gt;</code>, <code>&lt;</code>, <code>2&gt;</code>, <code>&gt;&amp;</code>, <code>&gt;&gt;&amp;</code></li>
+      <li>Pipe operator</li>
+      <li>Background job execution (&amp;) and process management</li>
+      <li>Signal handling: Ctrl-C behavior, SIGCHLD zombie cleanup</li>
+      <li>Built-in commands: <code>cd</code>, <code>exit</code>, <code>setenv</code>, <code>unsetenv</code>, <code>printenv</code>, <code>source</code></li>
+      <li>Subshells</li>
+      <li>Environment variable expansion</li>
+      <li>Tilde expansion & wildcarding (* and ? with regex)</li>
+      <li>Custom line editor (arrow keys, backspace, delete, home/end)</li>
+      <li>Command history with up/down arrows</li>
+    </ul>
+
+    <!-- Technical Implementation -->
+    <h3 class="text-2xl font-semibold mb-4">Implementation Details</h3>
+
+    <p class="text-gray-700 mb-2">
+      The project is split into several core components:
+    </p>
+
+    <ul class="list-disc pl-6 space-y-1 text-gray-700 mb-8">
+      <li><strong>Lexer (Flex):</strong> tokenizes commands, handles quotes, escapes, subshell extraction</li>
+      <li><strong>Parser (Bison):</strong> builds a full AST of <code>Command</code> and <code>SimpleCommand</code> objects</li>
+      <li><strong>Executor:</strong> performs process creation, piping, redirection, job control</li>
+      <li><strong>Signal subsystem:</strong> manages Ctrl-C and zombie processes safely</li>
+      <li><strong>Line editor:</strong> implements raw-terminal input, cursor movement, dynamic insertion</li>
+      <li><strong>Wildcard engine:</strong> converts shell wildcards to regex using <code>regcomp</code></li>
+      <li><strong>Subshell mechanism:</strong> uses two pipes + <code>yy_unput()</code> to inject subshell output into lexer</li>
+    </ul>
+
+    <!-- GitHub link -->
+    <a href="https://www.linkedin.com/in/tj-bui/"
+       class="inline-block mt-6 text-blue-600 hover:underline text-lg">
+      Contact me to see source code!
+    </a>
+  </div>
+</body>
+</html>
